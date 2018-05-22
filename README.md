@@ -21,3 +21,6 @@
 #### you -> yous -> yours -> yourts -> courts ->
 #### coures ->loures ->louies ->logies ->cogies ->
 #### conies -> conins -> coning -> coving -> loving
+
+## PartB samples:
+### Nuh yet finish :)
