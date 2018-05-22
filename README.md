@@ -3,7 +3,7 @@
 ## e.g.#1
 ### <word#1> "code"
 ### <word#2> "data"
-#### <result> "code -> cade -> cate -> date -> data"
+#### <result> data -> date -> cate -> cade -> code
 
 ## e.g.#2
 ### <word#1> "dafa"
