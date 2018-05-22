@@ -36,7 +36,7 @@
 #### Input file: hamlet.txt
 #### Value of N: 4
 #### of random words to generate (0 to quit): 40
-#### ... fire, that fain would blaze But that this folly douts it. Exit. King. Let's follow, Gertrude. How much I had to do to calm his rage I Now fear I this will give it start again; Therefore let's follow. Exeunt. ... 
+#### To do't. Examples gross as earth exhort me. Witness this army of such mass and charge, Led by a delicate and tender prince, Whose spirit, with divine ambition puff'd, Makes mouths at the invisible event, Exposing what is mortal and unsure yourself.
 
 ### e.g.#3
 #### Chines file or English file? ('C' or 'E'): C
