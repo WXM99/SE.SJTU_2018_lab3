@@ -8,11 +8,10 @@
 ## e.g.#2
 ### <word#1> "dafa"
 ### <word#2> "cofa"
-### <result> 
-(Warning: dafa is not in "dictionary.txt".)
-(Warning: cofa is not in "dictionary.txt".)
-A ladder form cofa to dafa: 
-cofa -> sofa -> soft -> saft -> daft -> dafa
+#### (Warning: dafa is not in "dictionary.txt".)
+#### (Warning: cofa is not in "dictionary.txt".)
+#### A ladder form cofa to dafa: 
+#### cofa -> sofa -> soft -> saft -> daft -> dafa
 
 ## e.g.#3
 ### <word#1> "loving"
