@@ -149,14 +149,15 @@ void clearSt(stack<string>& st){
 
 stack<string> container;
 bool geneReach(const string& w1,const string& w2, map<string, int> &english){
-    if(!isWord(w1,english) || !isWord(w2,english)){
+    if(w1.size() == w2.size() ){
         if(!isWord(w1,english)) cerr<<"(Warning: "<<w1<<" is not in \"dictionary.txt\".)"<<endl;
         if(!isWord(w2,english)) cerr<<"(Warning: "<<w2<<" is not in \"dictionary.txt\".)"<<endl;
-    }
-    if(w1.size() == w2.size() ){
-           return validReach(w1, w2, english);
+        return validReach(w1, w2, english);
     }else{
         if(w1.size() > w2.size()){
+            if(!isWord(w1,english)) cerr<<"(Warning: "<<w1<<" is not in \"dictionary.txt\".)"<<endl;
+            if(!isWord(w2,english)) cerr<<"(Warning: "<<w2<<" is not in \"dictionary.txt\".)"<<endl;
+    
             cerr<<"(Warning: different length)"<<endl;
             stack<string> myPath;
             myPath.push(w2);
@@ -226,4 +227,5 @@ int main(){
     }
     return 0;
 }
+
 
