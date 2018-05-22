@@ -37,3 +37,10 @@
 #### Value of N: 4
 #### of random words to generate (0 to quit): 40
 #### ... fire, that fain would blaze But that this folly douts it. Exit. King. Let's follow, Gertrude. How much I had to do to calm his rage I Now fear I this will give it start again; Therefore let's follow. Exeunt. ... 
+
+### e.g.#3
+#### Chines file or English file? ('C' or 'E'): C
+#### Input file: 三国.txt
+#### Value of N: 4
+#### of random words to generate (0 to quit): 100
+#### ...不意操竟指我为英雄，惟使君与操耳，以曹操何如？”延依其言。虽然诏玺已至，想此时已有杀修之心；又素与文钦交厚。今见大人两眉愁锁，必有埋伏，分付教刘琮出迎，两边壁衣中，掷杯于地，大喜，拥孟获渡了泸水，日间...
