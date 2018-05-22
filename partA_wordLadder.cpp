@@ -1,3 +1,15 @@
+//  This is a programm that finds a path connecting two words,
+//  and the path is made of words in dictionary with one letted changed each step
+//  Solving procedure:
+//      Step#1. Read the file and store valid word in a Map{english};
+//      Step#2. Put word1's neighbors in the stack;
+//      Step#3. Put the stack above in a queue;
+//      Step#4. try to connect in each word in neighbors,
+//              if can't try neighbor's neighbor and delet the previous one;
+//      Step#5. If Step#4 faild, the queue will be empty. That is no path for w1 and w2;
+//      Step#6. If w1 and w2 are in diffirent length,
+//              neighbors of the short one enlarge one letter in a time to reach the same lengh;
+//      Step#7. Word1 and 2 don't need to be in dictionary, but their neighbors do.
 #include <iostream>
 #include <stdio.h>
 #include <fstream>
@@ -9,7 +21,8 @@
 #include <stack>
 using namespace std;
 
-void lower(string &word){
+
+void lower(string &word){//transform to lower case
     int jump = int('a') - int('A');
     for(int i = 0; i<word.size(); i++){
         if(int(word[i])<=int('Z') && int(word[i])>=int('A')){
@@ -18,6 +31,7 @@ void lower(string &word){
     }
 }
 
+//store all valid word in a map
 map<string, int> dict(){
     map<string, int> vocabulary;
     ifstream file,file1,file2,file3;
@@ -30,11 +44,13 @@ map<string, int> dict(){
     return vocabulary;
 }
 
+//see if a given word is in the dictionary
 bool isWord(const string& word, const map<string, int>& english){
     if(english.count(word)) return true;
     else return false;
 }
 
+//thoes words who differ the given one only one letter and in dictionaty
 vector<string> neibs(string word, const map<string, int>& english){
     lower(word);
     vector<string> nbr;
@@ -47,6 +63,7 @@ vector<string> neibs(string word, const map<string, int>& english){
     return nbr;
 }
 
+//print the words in a stack form top to buttom
 void printSt(const stack<string> &pass_){
     stack<string> pass = pass_;
     vector<string> path;
@@ -62,6 +79,7 @@ void printSt(const stack<string> &pass_){
     cout<<endl;
 }
 
+//print the words in a stack in reverse order
 void printReSt(const stack<string> &pass_){
     stack<string> pass = pass_;
     vector<string> path;
@@ -78,7 +96,8 @@ void printReSt(const stack<string> &pass_){
 }
 
 
-stack<string> result;
+stack<string> result;//store the path
+//search the path between same-length words with the method in Step#4
 bool validReach(const string& w1,const string& w2, map<string, int> &english){
     if(!isWord(w2,english)){
         vector<string> neib = neibs(w2, english);
@@ -130,6 +149,7 @@ bool validReach(const string& w1,const string& w2, map<string, int> &english){
     return false;
 }
 
+//neighbors that a letter longer and in dictionary
 vector<string> enlargeWord(const string &word, const map<string, int>& english){
     vector<string> nbr;
     for(int i = 0 ;i < word.size()+1 ;i++){
@@ -141,13 +161,14 @@ vector<string> enlargeWord(const string &word, const map<string, int>& english){
     return nbr;
 }
 
+//make a stack empty(for the storage is a static stack)
 void clearSt(stack<string>& st){
     while(!st.empty()){
         st.pop();
     }
 }
 
-stack<string> container;
+stack<string> container;//Record the growing_longer path
 bool geneReach(const string& w1,const string& w2, map<string, int> &english){
     if(w1.size() == w2.size() ){
         if(!isWord(w1,english)) cerr<<"(Warning: "<<w1<<" is not in \"dictionary.txt\".)"<<endl;
@@ -197,7 +218,7 @@ bool geneReach(const string& w1,const string& w2, map<string, int> &english){
         }
 
         else{
-            return geneReach(w2,w1,english);
+            return geneReach(w2,w1,english);//w1 swich the position with w2
         }   
     }
 }
@@ -227,5 +248,6 @@ int main(){
     }
     return 0;
 }
+
 
 
