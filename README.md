@@ -7,6 +7,7 @@ Dictionary filename? oops.txt
 oops.txt isn't found. Please try again:   <<dictionary.txt
 
 word#1 and word#2 can be outside dictionary.txt and differ in length.
+
 /---------------------------------/
 
 word #1 (or Enter to quit ):  <<code
@@ -16,7 +17,9 @@ word #2 (or Enter to quit ):  <<data
 A ladder form data to code: 
 
 data date cate cade code 
+
 /---------------------------------/
+
 word #1 (or Enter to quit ):  <<code
 
 word #2 (or Enter to quit ):  <<cat
@@ -26,7 +29,9 @@ word #2 (or Enter to quit ):  <<cat
 A ladder form cat to code: 
 
 cat cats cate cade code 
+
 /---------------------------------/
+
 word #1 (or Enter to quit ):  <<dafa
 
 word #2 (or Enter to quit ):  <<coh
@@ -40,7 +45,9 @@ word #2 (or Enter to quit ):  <<coh
 A ladder form coh to dafa: 
 
 coh coth cote cate date data dafa 
+
 /-------------------------------/
+
 word #1 (or Enter to quit ): 
 
 Have a nice day!
