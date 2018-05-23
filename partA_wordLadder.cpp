@@ -32,10 +32,10 @@ void lower(string &word){//transform to lower case
 }
 
 //store all valid word in a map
-map<string, int> dict(){
+map<string, int> dict(string filename){
     map<string, int> vocabulary;
     ifstream file,file1,file2,file3;
-    file.open("dictionary.txt");
+    file.open(filename);
     string token;
     while(!file.eof()){
         file>>token;
@@ -225,7 +225,23 @@ bool geneReach(const string& w1,const string& w2, map<string, int> &english){
 
 
 int main(){
-    map<string, int> english = dict();
+    cout<<"Welcome!"<<endl;
+    
+    string filename;
+    cout<<"Dictionary filename? ";
+    getline(cin,filename);
+    ifstream test;
+    test.open(filename);
+    while(!test.is_open()){
+        cerr<<filename<<" isn't found. Please try again: ";
+        getline(cin,filename);
+        test.open(filename);
+    }
+    test.clear();
+
+
+    map<string, int> english = dict(filename);
+    cout<<"word#1 and word#2 can be outsied "<<filename<<" and differ in length."<<endl;
     while(true){
         string w1;
         string w2;
@@ -236,18 +252,21 @@ int main(){
         getline(cin,w2);
         if(w2 == "") break;
         lower(w1);lower(w2);
-        if(geneReach(w1, w2 ,english)){
-            if(w1.size() < w2.size()) printReSt(result);
-            else printSt(result);
-            clearSt(result);
+        if(w1 != w2){
+            if(geneReach(w1, w2 ,english)){
+                if(w1.size() < w2.size()) printReSt(result);
+                else printSt(result);
+                clearSt(result);
+            }else{
+                clearSt(result);
+                cout<<"no path";
+            }
+            cout<<endl;
         }else{
-            clearSt(result);
-            cout<<"no path";
+            cout<<"word#1 and word#2 are the same. Retry: "<<endl;
         }
-        cout<<endl;
     }
+    cout<<"Have a nice day!"<<endl;
     return 0;
 }
-
-
 
