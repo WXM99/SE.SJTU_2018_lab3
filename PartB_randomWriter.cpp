@@ -163,6 +163,40 @@ vector<string> geneText(int length, map<vector<string>, vector<string> > &work)
     }
 
 }
+
+vector<string> geneTextChinese(int length, map<vector<string>, vector<string> > &work)
+{
+    srand(time(0));
+    vector<string> text;
+    text.push_back("...");
+    vector<string> window; 
+    int begin;
+    
+    begin = random(0, work.size());//random position in map to begin
+    map<vector<string>, vector<string> >::iterator ptr;
+    ptr = work.begin();		
+    for(int i = 0; i < begin; i++){		
+        ptr++;		
+    }
+    window = ptr->first;
+    elemTrans(window, text);
+    srand(time(0));
+    while(text.size() != length+1){
+        if(work[window].size() == 0) break;
+        int randElem = random(0, work[window].size());
+        string nextWord = work[window][randElem];
+        text.push_back(nextWord);
+        
+        //window slide down
+        window.erase(window.begin());
+        window.push_back(nextWord);
+    
+    }
+        
+    text.push_back("...");
+    return text;
+
+}
 //print words (charactor) in vector
 void printVec(vector<string> vec){
     for(int i = 0; i< vec.size(); i++){
@@ -181,10 +215,10 @@ void printChinese(vector<string> vec){
 
 int main(){
 
-    cout<<"Chines file or English file? ('C' or 'E') ";
-    char language;
+    cout<<"Chinese file or English file? ('C' or 'E') ";
+    string language;
     cin>>language;
-    while(language != 'C' && language != 'E'){
+    while(language != "C" && language != "E"){
         cout<<"Invalid input. Retry: ";
         cin>>language;
     }
@@ -217,13 +251,14 @@ int main(){
                 cin>>length;
             }
             map<vector<string>, vector<string> > work;
-            if(language == 'E' || language == 'e'){
+            if(language == "E"){
                 work = markovChain(gram,filename);
                 vector<string> text = geneText(length, work);
+                cout<<"Here is a complete sentence: "<<endl;
                 printVec(text);
-            }else if(language == 'C' || language =='c'){
+            }else{
                 work = chineseChain(gram,filename);
-                vector<string> text = geneText(length, work);
+                vector<string> text = geneTextChinese(length, work);
                 printChinese(text);
             }
             
@@ -231,4 +266,3 @@ int main(){
 
     return 0;
 }
-
