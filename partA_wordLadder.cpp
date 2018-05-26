@@ -8,7 +8,7 @@
 //              if can't try neighbor's neighbor and delet the previous one;
 //      Step#5. If Step#4 faild, the queue will be empty. That is no path for w1 and w2;
 //      Step#6. If w1 and w2 are in diffirent length,
-//              neighbors of the short one enlarge one letter in a time to reach the same lengh;
+//              neighbors of the short one enlarge one letter or shrink in a time to reach the same lengh;
 //      Step#7. Word1 and 2 don't need to be in dictionary, but their neighbors do.
 #include <iostream>
 #include <stdio.h>
@@ -63,6 +63,78 @@ vector<string> neibs(string word, const map<string, int>& english){
     return nbr;
 }
 
+//neighbors that a letter longer and in dictionary
+vector<string> enlargeWord(const string &word, const map<string, int>& english){
+    vector<string> nbr;
+    for(int i = 0 ;i < word.size()+1 ;i++){
+        for(int j = int('a'); j <= int('z');j++){
+            string mid = word.substr(0,i) + char(j) + word.substr(i);
+            if(isWord(mid,english) && mid != word){nbr.push_back(mid);}
+        }
+    }
+    return nbr;
+}
+
+vector<string> shrinkWord(const string &word, const map<string, int>& english){
+    vector<string> nbr;
+    for(int i = 0 ;i < word.size() ;i++){
+        string mid = word.substr(0,i) + word.substr(i+1);
+        if(isWord(mid,english)){ 
+            nbr.push_back(mid);
+        }
+    }
+    return nbr;
+}
+
+//all possible neighbors summing up above 3 kinds
+vector<string> allNeibs(const string &word, const map<string, int>& english){
+    vector<string> nbr1 = shrinkWord(word, english);
+    vector<string> nbr2 = enlargeWord(word, english);
+    vector<string> nbr3 = neibs(word, english);
+    vector<string> all;
+    for(string i : nbr3){
+        all.push_back(i);
+    }
+    for(string i : nbr2){
+        all.push_back(i);
+    }
+    for(string i : nbr1){
+        all.push_back(i);
+    }
+    return all;
+}
+vector<string> neibUp(const string &word, const map<string, int>& english){
+    vector<string> nbr2 = enlargeWord(word, english);
+    vector<string> nbr3 = neibs(word, english);
+    vector<string> all;
+    for(string i : nbr3){
+        all.push_back(i);
+    }
+    for(string i : nbr2){
+        all.push_back(i);
+    }
+    return all;
+}
+vector<string> neibDown(const string &word, const map<string, int>& english){
+    vector<string> nbr1 = shrinkWord(word, english);
+    vector<string> nbr3 = neibs(word, english);
+    vector<string> all;
+    for(string i : nbr3){
+        all.push_back(i);
+    }
+    for(string i : nbr1){
+        all.push_back(i);
+    }
+    return all;
+}
+
+//make a stack empty(for the storage is a static stack)
+void clearSt(stack<string>& st){
+    while(!st.empty()){
+        st.pop();
+    }
+}
+
 //print the words in a stack form top to buttom
 void printSt(const stack<string> &pass_){
     stack<string> pass = pass_;
@@ -79,24 +151,8 @@ void printSt(const stack<string> &pass_){
     cout<<endl;
 }
 
-//print the words in a stack in reverse order
-void printReSt(const stack<string> &pass_){
-    stack<string> pass = pass_;
-    vector<string> path;
-    while(!pass.empty()){
-        path.push_back(pass.top());
-        pass.pop();
-    }
-    cout<<"A ladder form "<<path[path.size()-1]<<" to "
-        <<path[0]<<": "<<endl;
-    for(int i = path.size()-1; i >= 0; i--){
-        cout<<path[i]<<" ";
-    }
-    cout<<endl;
-}
-
-
-stack<string> result;//store the path
+//store the path
+stack<string> result;
 //search the path between same-length words with the method in Step#4
 bool validReach(const string& w1,const string& w2, map<string, int> &english){
     if(!isWord(w2,english)){
@@ -123,7 +179,16 @@ bool validReach(const string& w1,const string& w2, map<string, int> &english){
     while(!total.empty()){
         stack<string> headSt = total.front();
         total.pop();
-        vector<string> neib = neibs(headSt.top(),english);
+        vector<string> neib ;
+        
+        if(w1.size() > w2.size()){
+            neib = neibDown(headSt.top(),english);
+        }else if (w1.size() < w2.size()){
+            neib = neibUp(headSt.top(),english);
+        }else{
+            neib = neibs(headSt.top(),english);
+        }
+        
         for(auto i: neib){
             if(english[i] != 1){
                 if(i == w2) {
@@ -148,81 +213,6 @@ bool validReach(const string& w1,const string& w2, map<string, int> &english){
     }
     return false;
 }
-
-//neighbors that a letter longer and in dictionary
-vector<string> enlargeWord(const string &word, const map<string, int>& english){
-    vector<string> nbr;
-    for(int i = 0 ;i < word.size()+1 ;i++){
-        for(int j = int('a'); j <= int('z');j++){
-            string mid = word.substr(0,i) + char(j) + word.substr(i);
-            if(isWord(mid,english) && mid != word){nbr.push_back(mid);}
-        }
-    }
-    return nbr;
-}
-
-//make a stack empty(for the storage is a static stack)
-void clearSt(stack<string>& st){
-    while(!st.empty()){
-        st.pop();
-    }
-}
-
-stack<string> container;//Record the growing_longer path
-bool geneReach(const string& w1,const string& w2, map<string, int> &english){
-    if(w1.size() == w2.size() ){
-        if(!isWord(w1,english)) cerr<<"(Warning: "<<w1<<" is not in \"dictionary.txt\".)"<<endl;
-        if(!isWord(w2,english)) cerr<<"(Warning: "<<w2<<" is not in \"dictionary.txt\".)"<<endl;
-        return validReach(w1, w2, english);
-    }else{
-        if(w1.size() > w2.size()){
-            if(!isWord(w1,english)) cerr<<"(Warning: "<<w1<<" is not in \"dictionary.txt\".)"<<endl;
-            if(!isWord(w2,english)) cerr<<"(Warning: "<<w2<<" is not in \"dictionary.txt\".)"<<endl;
-    
-            cerr<<"(Warning: different length)"<<endl;
-            stack<string> myPath;
-            myPath.push(w2);
-            container.push(w2);//a path recording w2 -> enlarged w2
-            while(!myPath.empty()){//iterate every possible word
-
-                while(myPath.top().size() != w1.size()){//fill up
-                    vector<string> larger = enlargeWord(myPath.top(), english);
-                    if(container.top().size() == myPath.top().size()){//container keeps the latest word
-                        container.pop();
-                    }
-                    container.push(myPath.top());
-                    myPath.pop();
-                    if(!larger.empty()){
-                        for(string i: larger){
-                            myPath.push(i);
-
-                        }
-                    }
-                    if(myPath.empty()){
-                        clearSt(container);
-                        return false;
-                    } 
-                }  
-
-                if(validReach(w1,myPath.top(),english)){
-                    while(!container.empty()){
-                        result.push(container.top());
-                        container.pop();
-                    };
-                    return true;
-                }
-                else myPath.pop();
-            }
-            clearSt(container);
-            return false;
-        }
-
-        else{
-            return geneReach(w2,w1,english);//w1 swich the position with w2
-        }   
-    }
-}
-
 
 int main(){
     cout<<"Welcome!"<<endl;
@@ -253,15 +243,16 @@ int main(){
         if(w2 == "") break;
         lower(w1);lower(w2);
         if(w1 != w2){
-            if(geneReach(w1, w2 ,english)){
-                if(w1.size() < w2.size()) printReSt(result);
-                else printSt(result);
+            if(!isWord(w1,english))  cerr<<"(Warning: "<<w1<<" is not included in dictionary)"<<endl;
+            if(!isWord(w2,english))  cerr<<"(Warning: "<<w2<<" is not included in dictionary)"<<endl;
+            if(w1.size() != w2.size()) cerr<<"(Warning: diffirent in length)"<<endl; 
+            validReach(w1,w2,english);
+            if(!result.empty()){
+                stack<string> res = result;
+                printSt(res);
+                cout<<endl;
                 clearSt(result);
-            }else{
-                clearSt(result);
-                cout<<"no path";
-            }
-            cout<<endl;
+            }else cout<<"no path"<<endl;
         }else{
             cout<<"word#1 and word#2 are the same. Retry: "<<endl;
         }
@@ -269,4 +260,3 @@ int main(){
     cout<<"Have a nice day!"<<endl;
     return 0;
 }
-
